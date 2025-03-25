@@ -33,7 +33,7 @@ func main() {
 			key := "user-123" // Same key used by all goroutines
 
 			// Using singleflight to deduplicate calls
-			result, err, shared := g.Do(key, func() (interface{}, error) {
+			result, err, shared := g.Do(key, func() (any, error) {
 				return getDataFromDB(key)
 			})
 
@@ -59,7 +59,7 @@ func main() {
 			defer wg.Done()
 			key := "product-456"
 
-			ch := g.DoChan(key, func() (interface{}, error) {
+			ch := g.DoChan(key, func() (any, error) {
 				log.Printf("DoChan function executing for key: %s\n", key)
 				time.Sleep(200 * time.Millisecond)
 				return fmt.Sprintf("Product data for: %s", key), nil
